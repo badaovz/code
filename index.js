@@ -1,10 +1,18 @@
 var express = require('express');
-var app     = express();
+var bodyParser = require('body-parser');
+var userRoute = require('./route/user.route');
 
 var port = 3000;
 
+var app     = express();
+
 app.set('view engine', 'pug');
 app.set('views', './views');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));	
+
+app.use('/users',userRoute);
 
 app.get('/', function(req, res){
 	res.render('index', {
@@ -12,15 +20,7 @@ app.get('/', function(req, res){
 	});
 });
 
-app.get('/users',function(req, res){
-	res.send('users/index', {
-		users: [
-			{id: 1,name: 'dao'},
-			{id: 2,name: 'hai'},
-			{id: 3,name: 'hoa'}
-		]
-	});
-});
+
 
 app.listen(port, function(){
 	console.log('server listening on port' + port);
