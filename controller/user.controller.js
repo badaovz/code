@@ -35,7 +35,25 @@ module.exports.getforid = function(req, res){
 
 module.exports.postcreateuser = function(req, res){
 	req.body.id = shortid.generate();
+	var errors = [];
+	if(!req.body.name){
+		errors.push("Name not empty!")
+	}
+	if(!req.body.phone){
+		errors.push("Phone not empty!")
+	}
+	if (errors.length) {
+		res.render('users/createuser', {
+			errors: errors,
+			values: req.body
+		});
+		return;
+	}
 	db.get('users').push(req.body).write();
 	res.redirect('/users');
 };
+
+
+
+
 
